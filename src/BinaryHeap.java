@@ -1,42 +1,32 @@
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Queue;
+import java.util.*;
 
-public class BinaryHeap<T extends Comparable<T>> implements Queue<T> {
+public class BinaryHeap<T extends Comparable<T>> extends LinkedList<T> {
 
-    @Override
-    public int size() {
-        return 0;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
-
-    @Override
-    public boolean contains(Object o) {
-        return false;
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return null;
-    }
-
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
-
-    @Override
-    public <T1> T1[] toArray(T1[] a) {
-        return null;
-    }
-
+    // O(log n)
     @Override
     public boolean add(T t) {
-        return false;
+        if (t == null || this.contains(t))
+            return false;
+
+        int i, middle;
+        i = super.size();
+        super.add(t);
+        middle = (i - 1) / 2;
+
+        while(middle >= 0 && i > 0) {
+            T curr = super.get(i);
+            T mid = super.get(middle);
+
+            int comp = curr.compareTo(mid);
+            if(comp > 0) {
+                super.set(i, mid);
+                super.set(middle, curr);
+            }
+            i = middle;
+            middle = (i - 1) / 2;
+        }
+
+        return true;
     }
 
     @Override
@@ -44,10 +34,6 @@ public class BinaryHeap<T extends Comparable<T>> implements Queue<T> {
         return false;
     }
 
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
@@ -64,10 +50,6 @@ public class BinaryHeap<T extends Comparable<T>> implements Queue<T> {
         return false;
     }
 
-    @Override
-    public void clear() {
-
-    }
 
     @Override
     public boolean offer(T t) {
