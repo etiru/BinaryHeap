@@ -1,3 +1,5 @@
+package binaryheap;
+
 import java.util.*;
 
 public class BinaryHeap<T extends Comparable<T>> extends LinkedList<T> {
@@ -37,7 +39,13 @@ public class BinaryHeap<T extends Comparable<T>> extends LinkedList<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        return false;
+        boolean state = true;
+
+        for (T element : c)
+            if (!this.add(element))
+                state = false;
+
+        return state;
     }
 
     @Override
