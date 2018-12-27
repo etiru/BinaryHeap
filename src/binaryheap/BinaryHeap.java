@@ -4,7 +4,7 @@ import java.util.*;
 
 import static java.lang.Math.min;
 
-public class BinaryHeap<T extends Comparable<T>> extends LinkedList<T> {
+public class BinaryHeap<T extends Comparable<T>> extends ArrayList<T> implements Queue<T> {
 
     private void swap(int indexLeft, int indexRight) {
         T temp = super.get(indexLeft);
@@ -72,16 +72,6 @@ public class BinaryHeap<T extends Comparable<T>> extends LinkedList<T> {
 
     @Override
     public T remove(int index) {
-        /*T removeElement = super.get(index);
-
-        if (index >= super.size())
-            return null;
-
-        super.remove(index);
-        heapify();
-
-        return removeElement;*/
-
         if (index >= super.size())
             return null;
 
@@ -116,10 +106,8 @@ public class BinaryHeap<T extends Comparable<T>> extends LinkedList<T> {
         boolean state = true;
 
         for (T element : c)
-            if (!super.add(element))
+            if (!this.add(element))
                 state = false;
-
-        heapify();
 
         return state;
     }
@@ -139,7 +127,7 @@ public class BinaryHeap<T extends Comparable<T>> extends LinkedList<T> {
 
     @Override
     public String toString(){
-        List<String> strList = new ArrayList<String>();
+        List<String> strList = new ArrayList<>();
 
         int index = 0;
         while (index < super.size() - 1) {
@@ -149,7 +137,7 @@ public class BinaryHeap<T extends Comparable<T>> extends LinkedList<T> {
             StringBuilder builder = new StringBuilder();
 
             for (T element : super.subList(j, index + 1))
-                builder.append(element.toString() + " ");
+                builder.append(element.toString()).append(" ");
 
             strList.add(builder.toString());
             index++;
@@ -170,6 +158,9 @@ public class BinaryHeap<T extends Comparable<T>> extends LinkedList<T> {
             result.append(strList.get(i));
             result.append('\n');
         }
+
+        if (strList.isEmpty())
+            return "";
 
         result.append(strList.get(strList.size() - 1));
         return result.toString();

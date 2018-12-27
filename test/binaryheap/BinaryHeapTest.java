@@ -34,8 +34,7 @@ public class BinaryHeapTest {
 
     @Test
     public void invariantTest() {
-        List<Integer> test = new ArrayList<>();
-        test.addAll(Arrays.asList(100, 90, 26, 19, 36, 5, 25, 9, 3, 17, 34, 1, 4, 7, 8, 2));
+        List<Integer> test = new ArrayList<>(Arrays.asList(100, 90, 26, 19, 36, 5, 25, 9, 3, 17, 34, 1, 4, 7, 8, 2));
         assertTrue(invariant(test));
 
         test.add(30);
@@ -64,6 +63,18 @@ public class BinaryHeapTest {
            assertTrue(invariant(heap));
            assertEquals(heap.size(), elemSize);
        }
+
+        for (int i = 0; i < 1000; i++) {
+            BinaryHeap<Integer> heap = new BinaryHeap<>();
+            int elemSize = random.nextInt(1000);
+            List<Integer> list = new ArrayList<>();
+            for (int j = 0; j < elemSize; j++)
+                list.add(random.nextInt());
+
+            heap.addAll(list);
+            assertTrue(invariant(heap));
+            assertEquals(heap.size(), elemSize);
+        }
     }
 
     @Test
@@ -74,6 +85,7 @@ public class BinaryHeapTest {
             for (int j = 0; j < random.nextInt(1000); j++)
                 heap.add(random.nextInt());
 
+            String start = heap.toString();
             int heapSize = heap.size();
             if (heapSize == 0)
                 continue;
@@ -83,12 +95,17 @@ public class BinaryHeapTest {
 
             heap.remove((Object) elem);
 
+            if (!invariant(heap)) {
+                System.out.println(start);
+                System.out.println(elem);
+                System.out.println(heap);
+            }
+
             assertFalse(heap.contains(elem));
             assertTrue(invariant(heap));
             assertEquals(heap.size() + 1, heapSize);
         }
     }
-
 
 
     private Random random;
