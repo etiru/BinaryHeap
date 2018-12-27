@@ -2,7 +2,35 @@ package binaryheap;
 
 import java.util.*;
 
+import static java.lang.Math.min;
+
 public class BinaryHeap<T extends Comparable<T>> extends LinkedList<T> {
+
+
+    public void heapify(int i){
+            int left, right;
+            T temp;
+            left = 2*i+1;
+            right = 2*i+2;
+            if (left < super.size()) {
+                if (super.get(i).compareTo(super.get(left)) < 0) {
+                    temp = super.get(i);
+                    super.set(i, super.get(left));
+                    super.set(left, temp);
+                }
+                heapify(left);
+            }
+            if (right < super.size()) {
+                if (super.get(i).compareTo(super.get(right)) < 0) {
+                    temp = super.get(i);
+                    super.set(i, super.get(right));
+                    super.set(right, temp);
+                }
+                heapify(right);
+            }
+
+        }
+
 
     // O(log n)
     @Override
@@ -33,7 +61,13 @@ public class BinaryHeap<T extends Comparable<T>> extends LinkedList<T> {
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        int i = super.indexOf(o);
+        if (i < 0) return false;
+        super.set(i, super.getLast());
+        super.remove(super.size() - 1);
+
+        heapify(i);
+        return true;
     }
 
 
@@ -49,38 +83,54 @@ public class BinaryHeap<T extends Comparable<T>> extends LinkedList<T> {
     }
 
     @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
-    }
+    public String toString(){
+        StringBuilder result = new StringBuilder();
 
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
-    }
+        int i = 0;
+        while (i < super.size() - 1) {
+            int j = i;
+            i = min(i * 2, super.size() - 1);
 
+            for (T element : super.subList(j, i + 1))
+                result.append(element.toString() + " ");
+
+            result.append('\n');
+            i++;
+        }
+
+        return result.toString();
+    }
 
     @Override
     public boolean offer(T t) {
-        return false;
+        return add(t);
     }
 
     @Override
     public T remove() {
-        return null;
+        T result = super.getFirst();
+        if(!remove(super.getFirst()))
+            throw new NoSuchElementException();
+        return result;
     }
 
     @Override
     public T poll() {
-        return null;
+        if(super.isEmpty()) return null;
+        T obj = super.get(0);
+        remove(obj);
+        return obj;
     }
 
     @Override
     public T element() {
-        return null;
+        if(super.isEmpty()) throw new  NoSuchElementException();
+        return super.get(0);
     }
 
     @Override
     public T peek() {
-        return null;
+        if(super.isEmpty()) return null;
+        return super.get(0);
     }
 }
