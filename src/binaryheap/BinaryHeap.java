@@ -12,7 +12,7 @@ public class BinaryHeap<T extends Comparable<T>> extends ArrayList<T> implements
         super.set(indexRight, temp);
     }
 
-    // O(n)
+    // O(n) метод, который "нормализует" кучу, раставляет элементы, в правильном порядке в листе
     public void heapify() {
         if (super.isEmpty())
             return;
@@ -165,12 +165,13 @@ public class BinaryHeap<T extends Comparable<T>> extends ArrayList<T> implements
         result.append(strList.get(strList.size() - 1));
         return result.toString();
     }
-
+    //element(): возвращает, но не удаляет, элемент из начала очереди. Если очередь пуста,
+    //генерирует исключение NoSuchElementException
     @Override
     public boolean offer(T t) {
         return add(t);
     }
-
+    //remove(): возвращает с удалением элемент из начала очереди. Если очередь пуста, генерирует исключение NoSuchElementException
     @Override
     public T remove() {
         T result = this.remove(0);
@@ -179,7 +180,7 @@ public class BinaryHeap<T extends Comparable<T>> extends ArrayList<T> implements
 
         return result;
     }
-
+    //poll(): возвращает с удалением элемент из начала очереди. Если очередь пуста, возвращает значение null
     @Override
     public T poll() {
         if(super.isEmpty())
@@ -187,7 +188,8 @@ public class BinaryHeap<T extends Comparable<T>> extends ArrayList<T> implements
 
         return this.remove(0);
     }
-
+    //element(): возвращает, но не удаляет, элемент из начала очереди. Если очередь пуста,
+    //генерирует исключение NoSuchElementException
     @Override
     public T element() {
         if(super.isEmpty())
@@ -196,6 +198,7 @@ public class BinaryHeap<T extends Comparable<T>> extends ArrayList<T> implements
         return super.get(0);
     }
 
+    //peek(): возвращает без удаления элемент из начала очереди. Если очередь пуста, возвращает значение null
     @Override
     public T peek() {
         if(super.isEmpty())

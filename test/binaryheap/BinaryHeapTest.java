@@ -11,7 +11,7 @@ public class BinaryHeapTest {
     public BinaryHeapTest() {
         random = new Random();
     }
-
+    //метод, который проверяет кучу, на верное расположение элементов
     private <T extends Comparable<T>> boolean invariant(List<T> heap) {
         for (int i = 0; i < heap.size() / 2; i++) {
             T parent = heap.get(i);
@@ -53,6 +53,9 @@ public class BinaryHeapTest {
 
     @Test
     public void add() {
+
+
+
        for (int i = 0; i < 1000; i++) {
            BinaryHeap<Integer> heap = new BinaryHeap<>();
            int elemSize = random.nextInt(1000);
@@ -85,7 +88,6 @@ public class BinaryHeapTest {
             for (int j = 0; j < random.nextInt(1000); j++)
                 heap.add(random.nextInt());
 
-            String start = heap.toString();
             int heapSize = heap.size();
             if (heapSize == 0)
                 continue;
@@ -95,18 +97,114 @@ public class BinaryHeapTest {
 
             heap.remove((Object) elem);
 
-            if (!invariant(heap)) {
-                System.out.println(start);
-                System.out.println(elem);
-                System.out.println(heap);
-            }
-
             assertFalse(heap.contains(elem));
             assertTrue(invariant(heap));
             assertEquals(heap.size() + 1, heapSize);
         }
     }
+    @Test
+    //remove(): возвращает с удалением элемент из начала очереди.
+    // Если очередь пуста, генерирует исключение NoSuchElementException
+    public void removeQueue(){
+        BinaryHeap<Integer> typeNull = new BinaryHeap<Integer>();
+        typeNull.add(null);
+        assertThrows(NoSuchElementException.class, () -> typeNull.remove());
 
+        for (int i = 0; i < 10000; i++) {
+            BinaryHeap<Integer> heap = new BinaryHeap<>();
+
+            for (int j = 0; j < random.nextInt(1000); j++)
+                heap.add(random.nextInt());
+
+            int heapSize = heap.size();
+            if (heapSize == 0)
+                continue;
+
+            int elem = heap.get(0);
+            int remove = heap.remove();
+
+            assertEquals(elem, remove);
+            assertTrue(invariant(heap));
+        }
+
+    }
+    //poll(): возвращает с удалением элемент из начала очереди. Если очередь пуста, возвращает значение null
+    @Test
+    public void queuePoll(){
+        BinaryHeap<Integer> testNull = new BinaryHeap<>();
+        assertEquals(null, testNull.poll());
+
+        for (int i = 0; i < 10000; i++) {
+            BinaryHeap<Integer> heap = new BinaryHeap<>();
+
+            for (int j = 0; j < random.nextInt(1000); j++)
+                heap.add(random.nextInt());
+
+            int heapSize = heap.size();
+            if (heapSize == 0)
+                continue;
+
+            int elem = heap.get(0);
+            int pool = heap.poll();
+
+            assertEquals(elem, pool);
+            assertTrue(invariant(heap));
+        }
+    }
+    //peek(): возвращает без удаления элемент из начала очереди. Если очередь пуста, возвращает значение null
+    @Test
+    public void queuePeek(){
+        BinaryHeap<Integer> testNull = new BinaryHeap<>();
+        assertEquals(null, testNull.peek());
+
+        for (int i = 0; i < 10000; i++) {
+            BinaryHeap<Integer> heap = new BinaryHeap<>();
+
+            for (int j = 0; j < random.nextInt(1000); j++)
+                heap.add(random.nextInt());
+
+            int heapSize = heap.size();
+            if (heapSize == 0)
+                continue;
+
+            int elem = heap.get(0);
+            int peek = heap.peek();
+
+            assertEquals(elem, peek);
+            heap.peek();
+            assertTrue(heap.contains(elem));
+            assertTrue(invariant(heap));
+        }
+
+
+    }
+    //element(): возвращает, но не удаляет, элемент из начала очереди. Если очередь пуста,
+    //генерирует исключение NoSuchElementException
+    @Test
+    public void queueElement(){
+        BinaryHeap<Integer> typeNull = new BinaryHeap<Integer>();
+        typeNull.add(null);
+        assertThrows(NoSuchElementException.class, () -> typeNull.element());
+
+        for (int i = 0; i < 10000; i++) {
+            BinaryHeap<Integer> heap = new BinaryHeap<>();
+
+            for (int j = 0; j < random.nextInt(1000); j++)
+                heap.add(random.nextInt());
+
+            String start = heap.toString();
+            int heapSize = heap.size();
+            if (heapSize == 0)
+                continue;
+
+            int elem = heap.get(0);
+            int elemQueue = heap.element();
+
+            assertEquals(elem, elemQueue);
+            assertTrue(invariant(heap));
+        }
+
+    }
 
     private Random random;
 }
